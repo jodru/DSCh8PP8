@@ -8,23 +8,24 @@ public class EventList {
 		}
 	
 		public boolean isEmpty() {
-		
-		return(list == null);
-	}
+	        return(list == null || list.length < 1);
+	    }
 	
-		public void insert(Object anEvent) {
-		if (list[0] == null) {
+		public void insert(Event anEvent) {
+		if (isEmpty()) {
 			list[0] = anEvent;
+			
 		}
 		else {
 			Object temp = list[0];
 			
-			if (((Event) anEvent).getTime() < ((Event) list[0]).getTime()) {
-				list[0] = anEvent;
+			if (((Event) anEvent).getTime() <= ((Event) list[0]).getTime() ) {
+				list[0] = anEvent; 
+				System.out.println(((Event) list[0]).getTime());
 				list[1] = temp;
+				System.out.println(((Event) list[1]).getTime());
 			}
-			else
-				list[1] = anEvent;
+			else list[1] = anEvent;
 		}
 	}
 	
@@ -34,6 +35,7 @@ public class EventList {
 	public void delete() {
 		list[0] = null;
 		list[1] = list[0];
+		System.out.println("TRIPLE?!?");
 	}
 	
 

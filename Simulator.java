@@ -22,7 +22,7 @@ public static void main(String[] args) throws FileNotFoundException {
 		String split[] = line.split(" ");
 		int time = Integer.parseInt(split[0]);
 		int timeTaken = Integer.parseInt(split[1]);
-		Object arrivalEvent = new Event("A", time, timeTaken);
+		Event arrivalEvent = new Event("A", time, timeTaken);
 		int people = 1;
 		int avg = 0;		
 		EventList list = new EventList();
