@@ -10,7 +10,11 @@ public static void main(String[] args) throws FileNotFoundException {
 	
 	public static void simulate() throws FileNotFoundException  /*throws FileNotFoundException*/ {
 	//Performs simulation
-		System.out.println("Starting simulation... Ready!");
+		System.out.print("Starting simulation.");
+		System.out.print(".");
+		System.out.print(".");
+		System.out.println(" Ready!");
+		
 		QueueRef bankQueue = new QueueRef();
 		EventList anEventList = new EventList();
 		File text = new File("ArrivalFile.txt");
@@ -23,7 +27,7 @@ public static void main(String[] args) throws FileNotFoundException {
 		int time = Integer.parseInt(split[0]);
 		int timeTaken = Integer.parseInt(split[1]);
 		Event arrivalEvent = new Event("A", time, timeTaken);
-		int people = 1;
+		int people = 0;
 		int avg = 0;		
 		EventList list = new EventList();
 		list.insert(arrivalEvent);
@@ -31,29 +35,32 @@ public static void main(String[] args) throws FileNotFoundException {
 			while (!list.isEmpty()) {
 				Object newEvent = list.get(0);
 				int ADTime = ((Event) newEvent).getTime();
+				
 				if (((Event) newEvent).getWhich() == "A") {
-					processArrival(newEvent, scanner, list, bankQueue);
+                    processArrival(newEvent, scanner, list, bankQueue);
 					System.out.println("Processing arrival at time: " + ADTime);
 					people++;
 				}
-				else {
+				else if (((Event) newEvent).getWhich() == "D"){
 					avg = avg + processDeparture(newEvent, list, bankQueue);
 					System.out.println("Processing departure at time: " + ADTime);
 					
 				}
 			}
 			System.out.println("Simulation completed.");
+			System.out.println(" ");
+			System.out.println("Final Stats:");
 			System.out.println("Customer count = " + people);
-			System.out.println("Average time spent waiting = " + avg);
+			double waitTime = (double)avg/(double)people;
+			System.out.println("Average wait time: " + waitTime);
 	}	
 	public static void processArrival(Object newEvent, Scanner scanner, EventList list, QueueRef bankQueue) {
 	//Processes an arrival event
 		
 		boolean atFront = bankQueue.isEmpty(); //present queue status
-		
 		bankQueue.enqueue(newEvent); //update the bankQueue by inserting the customer, as described in arrivalEvent, into the queue
-		
 		list.delete(); //delete arrivalEvent from anEventList
+		
 		
 		if (atFront) {
 			//the line was empty, so new customer is at front of line and begins transaction immediately
@@ -62,6 +69,7 @@ public static void main(String[] args) throws FileNotFoundException {
 			int timeTaken = ((Event) top).getTimeTaken();
 			Event departureEvent = new Event("D", (time + timeTaken));
 			list.insert(departureEvent);
+			
 			
 		}
 		
@@ -72,6 +80,8 @@ public static void main(String[] args) throws FileNotFoundException {
 			int timeTaken = Integer.parseInt(split[1]);
 			Event arrivalEvent = new Event("A", time, timeTaken);
 			list.insert(arrivalEvent);
+			
+			
 		}
 		
 	}
@@ -93,6 +103,7 @@ public static void main(String[] args) throws FileNotFoundException {
 			Event departureEvent = new Event("D", (currentTime + timeTaken));
 			list.insert(departureEvent);
 		}
+		
 		return currentTime-initialTime;
 	}
 }
